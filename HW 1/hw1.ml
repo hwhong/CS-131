@@ -64,23 +64,6 @@ type ('nonterminal, 'terminal) symbol =
 
 (* ----------------------------- Remove Blind Alley Rule Starts Here ----------------------------- *)
 
-(*
-(* returns true if we've found terminiating, else returns false *)
-let rec recurse rule ruleList = match ruleList with 
-	| [] -> false
-	(* [Expression : rules] *)
-	| head::tail ->    
-		
-(* *)
-let rec filter_blind_alleys g = match #2 g with 
-	(* We've reached the end, effectively returning (start symbol, empty list) *)
-	| [] -> (#1 g, [])
-	(* Looking for valid rules *)
-	| head::tail -> if recurse head (#2 g) then (#1 g, head::(#2 filter_blind_alleys (#1 g, tail))) 
-					else (#1 g, #2 filter_blind_alleys (#1 g, tail))
-
-*)
-
 (* Determines whether something is a terminal or not *)
 let is_terminal rule = match rule with
   	| T x -> true
@@ -135,42 +118,8 @@ let rec final_filter l1 l2  = match l1, l2 with
 	| [], [] -> []
 	| x::xs, y::ys -> if isEmpty y then x::(final_filter xs ys) else final_filter xs ys
 
-(* Recursively, using the computed_fixed_point function, see if we could reach the state of sameness.
+(* 10. Recursively, using the computed_fixed_point function, see if we could reach the state of sameness.
    At that point, we know this is the grammar without the Blind alley rules*)
 let filter_blind_alleys g = ((fst g), (computed_fixed_point equal_lists parse_wrapper (snd g)))
 
-
-
-
-
-
-type awksub_nonterminals =
-  | Expr | Lvalue | Incrop | Binop | Num
-
-let awksub_rules =
-   [Expr, [T"("; N Expr; T")"];
-    Expr, [N Num];
-    Expr, [N Expr; N Binop; N Expr];
-    Expr, [N Lvalue];
-    Expr, [N Incrop; N Lvalue];
-    Expr, [N Lvalue; N Incrop];
-    Lvalue, [T"$"; N Expr];
-    Incrop, [T"++"];
-    Incrop, [T"--"];
-    Binop, [T"+"];
-    Binop, [T"-"];
-    Num, [T"0"];
-    Num, [T"1"];
-    Num, [T"2"];
-    Num, [T"3"];
-    Num, [T"4"];
-    Num, [T"5"];
-    Num, [T"6"];
-    Num, [T"7"];
-    Num, [T"8"];
-    Num, [T"9"]]
-
-let awksub_grammar = Expr, awksub_rules
-
-let awksub_test0 = filter_blind_alleys awksub_grammar = awksub_grammar
 
