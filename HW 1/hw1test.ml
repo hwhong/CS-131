@@ -19,19 +19,23 @@ let my_set_diff_test2 = equal_sets (set_diff [4;3;1] []) [1;3;4]
 let my_set_diff_test3 = equal_sets (set_diff [] [4;3;1]) []
 let my_set_diff_test4 = equal_sets (set_diff [1; 2; 3] [3]) [1; 2]
 
-(* Add test cases for functions starting here *)
-
 let my_computed_fixed_point_test0 = computed_fixed_point (=) (fun x -> x / 2) 1000000000 = 0
 let my_computed_fixed_point_test1 = computed_fixed_point (=) (fun x -> x *. 2.) 1. = infinity
 let my_computed_fixed_point_test2 = computed_fixed_point (=) sqrt 10. = 1.
-let my_computed_fixed_point_test3 =
-  ((computed_fixed_point (fun x y -> abs_float (x -. y) < 1.)
-			 (fun x -> x /. 2.)
-			 10.)
-   = 1.25)
+let my_computed_fixed_point_test3 = ((computed_fixed_point (fun x y -> abs_float (x -. y) < 1.)
+			                              (fun x -> x /. 2.) 10.) = 1.25)
+let my_computed_fixed_point_test4 = computed_fixed_point (=) (fun x -> x * 2) 2 = 4500
 
 let my_computed_periodic_point_test0 = computed_periodic_point (=) (fun x -> x / 2) 0 (-1) = -1
-let my_computed_periodic_point_test1 = computed_periodic_point (=) (fun x -> x *. x -. 1.) 2 0.5 = -1.
+(* let my_computed_periodic_point_test1 = computed_periodic_point (=) (fun x -> x *. x -. 1.) 2 0.5 = -1. *)
+let my_computed_periodic_point_test2 = computed_periodic_point (=) (fun x -> x / 4) 0 (-1) = -1
+
+let my_while_away_test0 = while_away ((+) 3) ((>) 10) 0 = [0;3;6;9]
+
+let my_rle_decode_test0 = rle_decode [2,0; 1,6] = [0; 0; 6]
+let my_rle_decode_test1 = rle_decode [3,"w"; 1,"x"; 0,"y"; 2,"z"] = ["w"; "w"; "w"; "x"; "z"; "z"]
+let my_rle_decode_test2 = rle_decode [10, "A"; 0, "B"] = ["A";"A";"A";"A";"A";"A";"A";"A";"A";"A"]
+let my_rle_decode_test3 = rle_decode [1, "H"; 1, "O"; 1, "N"; 1, "G"] = ["H";"O";"N";"G"]
 
 (* An example grammar for a small subset of Awk, derived from but not
    identical to the grammar in

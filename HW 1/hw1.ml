@@ -35,7 +35,6 @@ let rec computed_fixed_point eq f x =
 	if eq x (f x) then (f x) 
 	else computed_fixed_point eq f (f x)  
 
-(* TODO, not sure if this is correct *)
 (* 7. returns the computed periodic point for f with period p and with respect to x, 
  *    assuming that eq is the equality predicate for f's domain. *)
 let rec computed_periodic_point eq f p x = 
